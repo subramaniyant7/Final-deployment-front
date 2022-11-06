@@ -1,4 +1,3 @@
-
 html {
   font-size: 14px;
 }
@@ -14,7 +13,12 @@ body {
   margin-bottom: 50px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 1.5rem 0 1rem 0;
   font-family: inherit;
   font-weight: 600;
@@ -22,12 +26,30 @@ h1, h2, h3, h4, h5, h6 {
   color: inherit;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.5rem; }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1rem; }
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
 p {
   line-height: 1.5;
   margin: 0 0 1rem 0;
@@ -49,13 +71,15 @@ input[type="number"]::-webkit-inner-spin-button {
 
 @keyframes pulse {
   0% {
-      background-color: rgba(165, 165, 165, 0.1)
+    background-color: rgba(165, 165, 165, 0.1)
   }
+
   50% {
-      background-color: rgba(165, 165, 165, 0.3)
+    background-color: rgba(165, 165, 165, 0.3)
   }
+
   100% {
-      background-color: rgba(165, 165, 165, 0.1)
+    background-color: rgba(165, 165, 165, 0.1)
   }
 }
 
@@ -189,41 +213,41 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 span.flag {
-  width:44px;
-  height:30px;
-  display:inline-block;
+  width: 44px;
+  height: 30px;
+  display: inline-block;
 }
 
 img.flag {
-  width:30px
+  width: 30px
 }
 
-.edit_button{
+.edit_button {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   margin-top: -1%;
- 
+
 }
 
-.menu .p-menubar.menunav{
+.menu .p-menubar.menunav {
   display: flex;
   justify-content: space-between;
 }
 
-.menu .p-menubar.menunav .p-menuitem{
-  
+.menu .p-menubar.menunav .p-menuitem {
+
   background: #fff;
   border-radius: 16px;
 }
 
-.datatable-templating-demo .p-datatable .p-datatable-tbody > tr > td{
+.datatable-templating-demo .p-datatable .p-datatable-tbody>tr>td {
   padding: 0.3rem 1rem !important;
 }
 
 
 
 /* New Css */
-.p-menubar-root-list li:first-child{
+.p-menubar-root-list .p-menuitem:first-child{
   position: absolute;
   left: 40%;
   background: transparent !important;
@@ -234,4 +258,15 @@ img.flag {
     font-size: 20px;
 }
 
-            
+.p-menubar-root-list .p-submenu-list li:first-child{
+  position: unset;
+  color: #000;
+}
+.p-menubar-root-list .p-submenu-list li:first-child span{
+    color: #000 !important;
+    font-size: 14px;
+}
+
+.p-datatable .p-datatable-tbody > tr > td{
+  padding: 1rem 0.5rem !important;
+}

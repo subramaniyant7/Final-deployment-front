@@ -12,7 +12,8 @@ import {
   Data,
   SummaryColumns,
   SummaryData,
-  PMOColumns
+  PMOColumns,
+  Developement
 } from "../data";
 import { loadData } from "../features/tableInfo";
 import { ColumnGroup } from "primereact/columngroup";
@@ -105,20 +106,23 @@ const Dashboard = () => {
     let url = "";
     // Api call for submit
     if (activeIndex === 0) {
-      Api.post("/insert_update_milestone_date", data).then((res) => {
-        const response = res;
-        if (response.status == 200) {
-          // Handle Response
-          // Updating data after success in API
-          if (activeIndex === 0) {
-            getPMOData();
-          }
-          if (activeIndex !== 0) {
-            getApiData();
-          }
-        }
-      });
+      // Api.post("/insert_update_milestone_date", data).then((res) => {
+      //   const response = res;
+      //   if (response.status == 200) {
+      //     // Handle Response
+      //     // Updating data after success in API
+      //     if (activeIndex === 0) {
+      //       getPMOData();
+      //     }
+      //     if (activeIndex !== 0) {
+      //       getApiData();
+      //     }
+      //   }
+      // });
+      console.log('data', data)
+      setPMOData([data])
     }
+
     if (activeIndex === 1) {
       url = "/insert_update_records"; // change url
     }
@@ -285,8 +289,6 @@ const Dashboard = () => {
       url = "/get_hor";
     }
     if (activeIndex !== 0 && activeIndex !== 4) {
-
-
       Api.get(url)
         .then((res) => {
           setGetgetTableData(res.data.data);
@@ -294,7 +296,7 @@ const Dashboard = () => {
         .catch((error) => {
           setError(error);
         });
-
+        setGetgetTableData(Developement)
     }
     if (activeIndex === 4) {
       setbudgetData(SummaryData);
@@ -314,13 +316,19 @@ const Dashboard = () => {
   const getPMOData = () => {
 
     // Actual API Call
-    Api.get("/get_milestone_date")
-      .then((res) => {
-        setPMOData(res.data.data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
+    // Api.get("/get_milestone_date")
+    //   .then((res) => {
+    //     setPMOData(res.data.data);
+    //   })
+    //   .catch((error) => {
+    //     setError(error);
+    //   });
+
+
+    setPMOData([{
+      alpha: "None", ao: "None", beta: "None", bo: "None", es: "None", milestone_id: 1, mode: "High", po: "None", popl_2: "01/10/2022", popl_3: "None", project_id: 2, prq: "31/10/2022"
+      , pv: "15/7/2021"
+    }])
   };
 
   useEffect(() => {
@@ -354,7 +362,7 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      
+
       <div>
         {activeIndex !== 4 ? (
           <Toolbar

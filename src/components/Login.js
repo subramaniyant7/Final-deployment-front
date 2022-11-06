@@ -14,6 +14,8 @@ import { userData } from "../features/userInfo";
 import { Dropdown } from "primereact/dropdown";
 import Api from "../service/Api";
 import { login } from "../service/Config";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   let navigate = useNavigate();
@@ -27,7 +29,7 @@ const Login = () => {
     initialValues: {
       email: "",
       password: "",
-      project_name:""
+      project_name: ""
     },
     validate: (data) => {
       let errors = {};
@@ -42,7 +44,7 @@ const Login = () => {
       if (!data.password) {
         errors.password = "Password is required.";
       }
-      if(!data.project_name){
+      if (!data.project_name) {
         errors.project_name = "Please select project";
       }
       return errors;
@@ -67,18 +69,20 @@ const Login = () => {
       //     navigate("/dashboard");
       //   }
 
-       
+      //   if (response.error === 'Unauthorized') {
+      //     notify(response.error)
+      //   }
       // }).catch(error => {
       //   setError(error)
       // });
-     
-      
+
+
       // let userExist = Users.filter((user) => user.email === data.error);
       // console.log(userExist, "this is userE")
       // if(userExist){
       //   setShowMessage(true);
       // }
-   
+
       // let userExist = Users.filter((user) => user.email === data.email);
       // if (!userExist.length) {
       //   setShowMessage(true);
@@ -94,6 +98,18 @@ const Login = () => {
     },
   });
 
+
+  const notify = (error) => toast.error(error, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: 0,
+    theme: "colored",
+  });
+
   const isFormFieldValid = (name) =>
     !!(formik.touched[name] && formik.errors[name]);
   const getFormErrorMessage = (name) => {
@@ -105,7 +121,7 @@ const Login = () => {
   };
 
   const projects = [
-    { project_id : 1, project_name: "Project 1" },
+    { project_id: 1, project_name: "Project 1" },
   ];
 
   useEffect(() => {
@@ -130,7 +146,7 @@ const Login = () => {
   return (
     <div className="ui-grid-col-8">
       {showMessage && <Notification type="error" message="User not found" />}
-
+      <ToastContainer />
       <div className="form-demo">
         <div className="flex justify-content-center">
           <div className="card">
@@ -180,20 +196,20 @@ const Login = () => {
               </div>
               <div className="field">
                 <span className="p-float-label p-input-icon-right">
-              <Dropdown
-                className="test"
-                name="project_name"
-                value={selectedMilestone1}
-                options={projectList}
-                // onChange={onMilestoneChange}
-                onChange={(e) => { formik.setFieldValue([e.target.name],e.target.value.project_id); setSelectedMilestone1(e.target.value)}}
-                
-                variant="outlined info"
-                optionLabel="project_name"
-                placeholder="Select Project"
-              />
-               </span>
-                {getFormErrorMessage("password")}
+                  <Dropdown
+                    className="test"
+                    name="project_name"
+                    value={selectedMilestone1}
+                    options={projectList}
+                    // onChange={onMilestoneChange}
+                    onChange={(e) => { formik.setFieldValue([e.target.name], e.target.value.project_id); setSelectedMilestone1(e.target.value) }}
+
+                    variant="outlined info"
+                    optionLabel="project_name"
+                    placeholder="Select Project"
+                  />
+                </span>
+                {getFormErrorMessage("project_name")}
               </div>
 
               <Button
