@@ -22,6 +22,7 @@ import { Column } from "primereact/column";
 import Api from "../service/Api";
 import { Toolbar } from "primereact/toolbar";
 import { exports, modes, items, columns } from '../shared/utils'
+import DialogModal from './DialogModal'
 
 const Dashboard = () => {
   const toast = useRef(null);
@@ -39,6 +40,11 @@ const Dashboard = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [pmoData, setPMOData] = useState([]);
   const [budgetData, setbudgetData] = useState([]);
+
+
+  const [submitDisable, setSubmitDisable] = useState(true);
+  const [modalShow, setModalShow] = useState(false)
+
   // Redux
   const tableInfo = useSelector((state) => state.tableInfo);
   const dispatch = useDispatch();
@@ -52,7 +58,7 @@ const Dashboard = () => {
             columns={PMOColumns}
             data={pmoData}
             colEdit={columnEdit}
-            handleTableData={submitpmo}
+            handleTableData={handlePmoChangeData}
           />
         );
         break;
@@ -70,6 +76,17 @@ const Dashboard = () => {
     }
     return componentRender;
   };
+
+
+  const handlePmoChangeData = (data) => {
+    setSubmitDisable(false);
+    setPMOData([data])
+  }
+
+  const handleSubmitData = () => {
+    console.log({ ...pmoData })
+    submitpmo(pmoData[0])
+  }
 
   const handleTableData = (data) => {
     const newTableInfo = tableInfo.map((table, index) => {
@@ -106,6 +123,9 @@ const Dashboard = () => {
     let url = "";
     // Api call for submit
     if (activeIndex === 0) {
+
+      setSubmitDisable(true);
+
       // Api.post("/insert_update_milestone_date", data).then((res) => {
       //   const response = res;
       //   if (response.status == 200) {
@@ -176,16 +196,30 @@ const Dashboard = () => {
     </ColumnGroup>
   );
 
+
   const openNew = () => {
-    console.log("button clicked");
-    // setGetgetTableData(emptyProduct);
-    // setSubmitted(false);
-    setProductDialog(true);
-  };
+    console.log('event')
+    setModalShow(true);
+  }
 
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
+        {activeIndex !== 0 && activeIndex !== 4 ? (
+          <Button
+            label="New"
+            icon="pi pi-plus"
+            className="p-button-raised p-button-rounded mb-2 mr-2"
+            style={{
+              backgroundColor: "transparent",
+              float: "left",
+              color: "grey",
+              border: "1px solid",
+              borderRadius: "2rem",
+              fontWeight: "700",
+            }}
+            onClick={openNew} />
+        ) : null}
         {activeIndex === 0 ? (
           <div>
             <span style={{ fontWeight: "600", fontSize: "18px" }}>
@@ -201,6 +235,7 @@ const Dashboard = () => {
             </span>
           </div>
         ) : null}
+
 
         {/* {activeIndex !== 0 && activeIndex !== 4 ? (
           <Button
@@ -296,7 +331,7 @@ const Dashboard = () => {
         .catch((error) => {
           setError(error);
         });
-        setGetgetTableData(Developement)
+      setGetgetTableData(Developement)
     }
     if (activeIndex === 4) {
       setbudgetData(SummaryData);
@@ -347,10 +382,14 @@ const Dashboard = () => {
     dispatch(loadData(Data));
   }, [userStore]);
 
+  console.log('modalshow', modalShow)
 
   return (
     <div className="datatable-editing-demo">
       <Toast ref={toast} />
+      {
+        modalShow && <DialogModal />
+      }
       <div>
         <div className="card">
           <TabMenu
@@ -387,13 +426,14 @@ const Dashboard = () => {
       {activeIndex !== 4 ? (
         <Button
           label="Submit"
-          onClick={submitpmo}
+          onClick={activeIndex === 0 ? handleSubmitData : submitpmo}
           aria-label="Submit"
           style={{
             display: "flex",
             float: "right",
             backgroundColor: "#405685",
           }}
+          disabled={activeIndex === 0 ? submitDisable : false}
         />
       ) : null}
     </div>
