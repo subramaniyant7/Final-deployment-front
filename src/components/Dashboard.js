@@ -22,7 +22,7 @@ import { Column } from "primereact/column";
 import Api from "../service/Api";
 import { Toolbar } from "primereact/toolbar";
 import { exports, modes, items, columns } from '../shared/utils'
-import DialogModal from './DialogModal'
+import DialogComponent from './DialogModal'
 
 const Dashboard = () => {
   const toast = useRef(null);
@@ -171,6 +171,24 @@ const Dashboard = () => {
     }
     setColumnEdit(false);
   };
+
+  // Create New Action
+  const createNewAction = (data) => {
+    // Api.post("/insert_update_milestone_date", data).then((res) => {
+      //   const response = res;
+      //   if (response.status == 200) {
+      //     // Handle Response
+      //     // Updating data after success in API
+      //     if (activeIndex === 0) {
+      //       getPMOData();
+      //     }
+      //     if (activeIndex !== 0) {
+      //       getApiData();
+      //     }
+      //   }
+      // });
+      setModalShow(false)
+  }
 
   let headerGroup = (
     <ColumnGroup>
@@ -366,6 +384,10 @@ const Dashboard = () => {
     }])
   };
 
+  const closeModal = () => {
+    setModalShow(false)
+  }
+
   useEffect(() => {
     if (activeIndex !== 0) {
       getApiData();
@@ -382,13 +404,18 @@ const Dashboard = () => {
     dispatch(loadData(Data));
   }, [userStore]);
 
-  console.log('modalshow', modalShow)
 
   return (
     <div className="datatable-editing-demo">
       <Toast ref={toast} />
       {
-        modalShow && <DialogModal />
+        modalShow && 
+          <DialogComponent 
+            activeIndex={activeIndex} 
+            selectedMode={selectedMode}
+            showModal={modalShow} 
+            closeModal={closeModal} 
+            createNewAction={createNewAction}/>
       }
       <div>
         <div className="card">
