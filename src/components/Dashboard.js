@@ -174,20 +174,34 @@ const Dashboard = () => {
 
   // Create New Action
   const createNewAction = (data) => {
-    // Api.post("/insert_update_milestone_date", data).then((res) => {
-      //   const response = res;
-      //   if (response.status == 200) {
-      //     // Handle Response
-      //     // Updating data after success in API
-      //     if (activeIndex === 0) {
-      //       getPMOData();
-      //     }
-      //     if (activeIndex !== 0) {
-      //       getApiData();
-      //     }
-      //   }
-      // });
-      setModalShow(false)
+
+    let total = parseInt(data.q1) + parseInt(data.q2) + parseInt(data.q3) + parseInt(data.q4) + parseInt(data.q5) + parseInt(data.q6) + parseInt(data.q7) +
+      parseInt(data.q8) + parseInt(data.q9) + parseInt(data.q10) + parseInt(data.q11) + parseInt(data.q12) + parseInt(data.q13);
+
+    const prepareData = {
+      ...data,
+      estimation_type: data.estimation_type.name,
+      milestone: "",
+      project_id: userStore.project_name.project_id,
+      record_id: null,
+      total_till_prq: total
+    }
+
+
+    // Api.post("/insert_update_milestone_date", {data: [prepareData]}).then((res) => {
+    //   const response = res;
+    //   if (response.status == 200) {
+    //     // Handle Response
+    //     // Updating data after success in API
+    //     if (activeIndex === 0) {
+    //       getPMOData();
+    //     }
+    //     if (activeIndex !== 0) {
+    //       getApiData();
+    //     }
+    //   }
+    // });
+    setModalShow(false)
   }
 
   let headerGroup = (
@@ -380,7 +394,7 @@ const Dashboard = () => {
 
     setPMOData([{
       alpha: "None", ao: "None", beta: "None", bo: "None", es: "None", milestone_id: 1, mode: "High", po: "None", popl_2: "01/10/2022", popl_3: "None", project_id: 2, prq: "31/10/2022"
-      , pv: "15/7/2021"
+      , pv: "15/11/2022"
     }])
   };
 
@@ -409,13 +423,13 @@ const Dashboard = () => {
     <div className="datatable-editing-demo">
       <Toast ref={toast} />
       {
-        modalShow && 
-          <DialogComponent 
-            activeIndex={activeIndex} 
-            selectedMode={selectedMode}
-            showModal={modalShow} 
-            closeModal={closeModal} 
-            createNewAction={createNewAction}/>
+        modalShow &&
+        <DialogComponent
+          activeIndex={activeIndex}
+          selectedMode={selectedMode}
+          showModal={modalShow}
+          closeModal={closeModal}
+          createNewAction={createNewAction} />
       }
       <div>
         <div className="card">

@@ -8,32 +8,28 @@ import { InputNumber } from 'primereact/inputnumber';
 
 const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, createNewAction }) => {
     const medium = ['Development', 'Validation', 'Horizontal']
-    console.log('activeIndex', activeIndex)
-    console.log('selectedMode', selectedMode)
     let mode = selectedMode !== null ? selectedMode.name : ''
-    console.log('mode', mode)
     let initialState = {
-        name: "",
-        category: medium[parseInt(activeIndex) - 1],
-        feature_owner: "",
         domain: "",
-        features: "",
-        feature: "",
-        feature_mode: mode,
         estimation_type: "",
-        q1: "",
-        q2: "",
-        q3: "",
-        q4: "",
-        q5: "",
-        q6: "",
-        q7: "",
-        q8: "",
-        q9: "",
-        q10: "",
-        q11: "",
-        q12: "",
-        q13: "",
+        feature_owner: "",
+        features: "",
+        function: medium[parseInt(activeIndex) - 1],
+        function_owner: "",
+        mode: "",
+        q1: 0,
+        q2: 0,
+        q3: 0,
+        q4: 0,
+        q5: 0,
+        q6: 0,
+        q7: 0,
+        q8: 0,
+        q9: 0,
+        q10: 0,
+        q11: 0,
+        q12: 0,
+        q13: 0,
     };
 
     const [product, setProduct] = useState(initialState);
@@ -57,12 +53,12 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
 
     const handleSubmit = () => {
         let allErrors = {};
-        if (!product.name) {
-            allErrors.name = "Function Owner is required.";
+        if (!product.function_owner) {
+            allErrors.function_owner = "Function Owner is required.";
         }
 
-        if (!product.category) {
-            allErrors.category = "Category is required";
+        if (!product.function) {
+            allErrors.function = "Function is required";
         }
 
         if (!product.feature_owner) {
@@ -77,12 +73,12 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
             allErrors.features = "Features is required";
         }
 
-        if (!product.feature) {
-            allErrors.feature = "Feature is required";
+        if (!product.status) {
+            allErrors.status = "Features On/Off is required";
         }
 
-        if (!product.feature_mode) {
-            allErrors.feature_mode = "Feature Mode is required.";
+        if (!product.mode) {
+            allErrors.mode = "Feature Mode is required";
         }
 
         if (!Object.keys(product.estimation_type).length) {
@@ -92,6 +88,7 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
         if (Object.keys(allErrors).length) {
             setError(allErrors);
         } else {
+            console.log('product', product)
             setError({});
             let createNew = { ...product }
             createNewAction(createNew)
@@ -101,6 +98,11 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
 
 
 
+   
+    const handleEventChange = (name, value) => {
+        setProduct({ ...product, [name]: value });
+    }
+
     const RenderQuarter = () => {
         let htmlData = [];
         for (let p = 1; p <= 13; p++) {
@@ -109,7 +111,7 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
                 <>
                     <div className="field col col-4">
                         <label htmlFor="price">Quarter {p} </label>
-                        <InputNumber id="price" name={name} value={product[name]} onValueChange={(e) => setProduct(e.target.value)} mode="decimal"
+                        <InputNumber id="price" name={name} value={product[name]} onValueChange={(e) => handleEventChange([name],e.target.value)} mode="decimal"
                             minFractionDigits={2} maxFractionDigits={5} />
                     </div>
                     {error[name] !== '' ? <small className="p-error">{error[name]}</small> : null}
@@ -119,11 +121,9 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
         return htmlData
     }
 
-    const handleEventChange = (name, value) => {
-        setProduct({ ...product, [name]: value });
-    }
 
     console.log('product', product)
+    console.log('error', error)
 
     return (
 
@@ -133,29 +133,29 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
                     <form className="p-fluid">
                         <div className="field">
                             <label htmlFor="name">Function Owner</label>
-                            <InputText value={product.name} name="name" onChange={(e) => handleEventChange('name', e.target.value)} required autoFocus />
-                            {error?.name !== '' ? <small className="p-error">{error.name}</small> : null}
+                            <InputText value={product.name} name="function_owner" onChange={(e) => handleEventChange('function_owner', e.target.value)} required autoFocus />
+                            {error?.function_owner !== '' ? <small className="p-error">{error.function_owner}</small> : null}
                         </div>
 
                         <div className="field">
                             <label className="mb-3">Function</label>
                             <div className="formgrid grid">
                                 <div className="field-radiobutton col-4">
-                                    <RadioButton inputId="category1" name="category" value="Development" onChange={(e) => handleEventChange('category', e.target.value)}
-                                        checked={product.category === 'Development'} disabled={product.category !== 'Development'} />
+                                    <RadioButton inputId="category1" name="function" value="Development" onChange={(e) => handleEventChange('function', e.target.value)}
+                                        checked={product.function === 'Development'} disabled={product.function !== 'Development'} />
                                     <label htmlFor="category1">Development</label>
                                 </div>
                                 <div className="field-radiobutton col-4">
-                                    <RadioButton inputId="category2" name="category" value="Validation" onChange={(e) => handleEventChange('category', e.target.value)}
-                                        checked={product.category === 'Validation'} disabled={product.category !== 'Validation'} />
+                                    <RadioButton inputId="category2" name="function" value="Validation" onChange={(e) => handleEventChange('function', e.target.value)}
+                                        checked={product.function === 'Validation'} disabled={product.function !== 'Validation'} />
                                     <label htmlFor="category2">Validation</label>
                                 </div>
                                 <div className="field-radiobutton col-4">
-                                    <RadioButton inputId="category3" name="category" value="Horizontal" onChange={(e) => handleEventChange('category', e.target.value)}
-                                        checked={product.category === 'Horizontal'} disabled={product.category !== 'Horizontal'} />
+                                    <RadioButton inputId="category3" name="function" value="Horizontal" onChange={(e) => handleEventChange('function', e.target.value)}
+                                        checked={product.function === 'Horizontal'} disabled={product.function !== 'Horizontal'} />
                                     <label htmlFor="category3">Horizontal</label>
                                 </div>
-                                {error?.category !== '' ? <small className="p-error">{error.category}</small> : null}
+                                {error?.function !== '' ? <small className="p-error">{error.function}</small> : null}
                             </div>
                         </div>
 
@@ -181,14 +181,14 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
                             <label className="mb-3">Feature ON/OFF</label>
                             <div className="formgrid grid">
                                 <div className="field-radiobutton col-6">
-                                    <RadioButton name="feature" value="Yes" onChange={(e) => handleEventChange('feature', e.target.value)} checked={product.feature === 'Yes'} />
+                                    <RadioButton name="status" value="Yes" onChange={(e) => handleEventChange('status', e.target.value)} checked={product.status === 'Yes'} />
                                     <label>Yes</label>
                                 </div>
                                 <div className="field-radiobutton col-6">
-                                    <RadioButton name="feature" value="No" onChange={(e) => handleEventChange('feature', e.target.value)} checked={product.feature === 'No'} />
+                                    <RadioButton name="status" value="No" onChange={(e) => handleEventChange('status', e.target.value)} checked={product.status === 'No'} />
                                     <label >No</label>
                                 </div>
-                                {error?.feature !== '' ? <small className="p-error">{error.feature}</small> : null}
+                                {error?.status !== '' ? <small className="p-error">{error.status}</small> : null}
                             </div>
                         </div>
 
@@ -196,21 +196,21 @@ const DialogComponent = ({ activeIndex, selectedMode, showModal, closeModal, cre
                             <label className="mb-3">Feature Mode</label>
                             <div className="formgrid grid">
                                 <div className="field-radiobutton col-6">
-                                    <RadioButton name="feature_mode" value="Low" onChange={(e) => handleEventChange('feature_mode', e.target.value)}
-                                        checked={product.feature_mode === 'Low Modify'} disabled={product.feature_mode !== 'Low Modify' && mode !== ''}/>
+                                    <RadioButton name="mode" value="Low" onChange={(e) => handleEventChange('mode', e.target.value)}
+                                        checked={product.mode === 'Low Modify'} disabled={product.mode !== 'Low Modify' && mode !== ''} />
                                     <label>Low</label>
                                 </div>
                                 <div className="field-radiobutton col-6">
-                                    <RadioButton name="feature_mode" value="Medium" onChange={(e) => handleEventChange('feature_mode', e.target.value)}
-                                        checked={product.feature_mode === 'Medium Modify'} disabled={product.feature_mode !== 'Medium Modify' && mode !== ''}/>
+                                    <RadioButton name="mode" value="Medium" onChange={(e) => handleEventChange('mode', e.target.value)}
+                                        checked={product.mode === 'Medium Modify'} disabled={product.mode !== 'Medium Modify' && mode !== ''} />
                                     <label >Medium</label>
                                 </div>
                                 <div className="field-radiobutton col-6">
-                                    <RadioButton name="feature_mode" value="Heavy" onChange={(e) => handleEventChange('feature_mode', e.target.value)}
-                                        checked={product.feature_mode === 'Heavy Modify'} disabled={product.feature_mode !== 'Heavy Modify' && mode !== ''}/>
+                                    <RadioButton name="mode" value="Heavy" onChange={(e) => handleEventChange('mode', e.target.value)}
+                                        checked={product.mode === 'Heavy Modify'} disabled={product.mode !== 'Heavy Modify' && mode !== ''} />
                                     <label htmlFor="category3">Heavy</label>
                                 </div>
-                                {error?.feature_mode !== '' ? <small className="p-error">{error.feature_mode}</small> : null}
+                                {error?.mode !== '' ? <small className="p-error">{error.mode}</small> : null}
                             </div>
                         </div>
 

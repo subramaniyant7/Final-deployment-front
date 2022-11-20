@@ -48,62 +48,70 @@ function Pmo({ columns, data, colEdit, handleTableData }) {
     let data = { ...newRowData, [field]: date3 };
     console.log('e', e)
     console.log('data', data)
-    if (field !== 'popl_2') {
-      let fieldValue = '';
-      let nextValue = '';
-      switch (field) {
-        case 'popl_3':
-          fieldValue = newRowData['popl_2']
-          nextValue = newRowData['po'] !== '' && newRowData['po'] !== 'None' ? newRowData['po'] : newRowData['prq'];
-          break;
-        case 'po':
-          fieldValue = newRowData['popl_3'] !== 'None' ? newRowData['popl_3'] : newRowData['popl_2']
-          nextValue = newRowData['es'] !== '' && newRowData['es'] !== 'None' ? newRowData['es'] : newRowData['prq'];
-          break;
-        case 'es':
-          fieldValue = newRowData['po'] !== 'None' ? newRowData['po'] : newRowData['popl_2']
-          nextValue = newRowData['ao'] !== '' && newRowData['ao'] !== 'None' ? newRowData['ao'] : newRowData['prq'];
-          break;
-        case 'ao':
-          fieldValue = newRowData['es'] !== 'None' ? newRowData['es'] : newRowData['popl_2']
-          nextValue = newRowData['bo'] !== '' && newRowData['bo'] !== 'None' ? newRowData['bo'] : newRowData['prq'];
-          break;
-        case 'bo':
-          fieldValue = newRowData['ao'] !== 'None' ? newRowData['ao'] : newRowData['popl_2']
-          nextValue = newRowData['alpha'] !== '' && newRowData['alpha'] !== 'None' ? newRowData['alpha'] : newRowData['prq'];
-          break;
-        case 'alpha':
-          fieldValue = newRowData['bo'] !== 'None' ? newRowData['bo'] : newRowData['popl_2']
-          nextValue = newRowData['beta'] !== '' && newRowData['beta'] !== 'None' ? newRowData['beta'] : newRowData['prq'];
-          break;
-        case 'beta':
-          fieldValue = newRowData['alpha'] !== 'None' ? newRowData['alpha'] : newRowData['popl_2']
-          nextValue = newRowData['prq'];
-          break;
-        case 'prq':
-          fieldValue = newRowData['beta'] !== 'None' ? newRowData['beta'] : newRowData['popl_2']
-          break;
-        default:
-          break;
-      }
-      const date1 = new Date(dateFor(fieldValue));
-      const date2 = new Date(newDate);
-      const diffTime = date2 - date1;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      console.log('nextValue', nextValue)
-      const nextDate = new Date(dateFor(nextValue));
-      const nextdiffTime = nextDate - date2;
-      const nextdiffDays = Math.ceil(nextdiffTime / (1000 * 60 * 60 * 24));
-
-      console.log('nextdiffDays', nextdiffDays)
-
-      if ( (field === 'prq' && diffDays > 0) || (field !== 'prq' && diffDays > 0 && nextdiffDays > 0) ) {
-        handleTableData(data);
-      } else {
-        notify()
-      }
+    let fieldValue = '';
+    let nextValue = '';
+    switch (field) {
+      case 'popl_3':
+        fieldValue = newRowData['popl_2']
+        nextValue = newRowData['po'] !== '' && newRowData['po'] !== 'None' ? newRowData['po'] : newRowData['prq'];
+        break;
+      case 'po':
+        fieldValue = newRowData['popl_3'] !== 'None' ? newRowData['popl_3'] : newRowData['popl_2']
+        nextValue = newRowData['es'] !== '' && newRowData['es'] !== 'None' ? newRowData['es'] : newRowData['prq'];
+        break;
+      case 'es':
+        fieldValue = newRowData['po'] !== 'None' ? newRowData['po'] : newRowData['popl_2']
+        nextValue = newRowData['ao'] !== '' && newRowData['ao'] !== 'None' ? newRowData['ao'] : newRowData['prq'];
+        break;
+      case 'ao':
+        fieldValue = newRowData['es'] !== 'None' ? newRowData['es'] : newRowData['popl_2']
+        nextValue = newRowData['bo'] !== '' && newRowData['bo'] !== 'None' ? newRowData['bo'] : newRowData['prq'];
+        break;
+      case 'bo':
+        fieldValue = newRowData['ao'] !== 'None' ? newRowData['ao'] : newRowData['popl_2']
+        nextValue = newRowData['alpha'] !== '' && newRowData['alpha'] !== 'None' ? newRowData['alpha'] : newRowData['prq'];
+        break;
+      case 'alpha':
+        fieldValue = newRowData['bo'] !== 'None' ? newRowData['bo'] : newRowData['popl_2']
+        nextValue = newRowData['beta'] !== '' && newRowData['beta'] !== 'None' ? newRowData['beta'] : newRowData['prq'];
+        break;
+      case 'beta':
+        fieldValue = newRowData['alpha'] !== 'None' ? newRowData['alpha'] : newRowData['popl_2']
+        nextValue = newRowData['prq'];
+        break;
+      case 'prq':
+        fieldValue = newRowData['beta'] !== 'None' ? newRowData['beta'] : newRowData['popl_2']
+        nextValue = newRowData['pv'];
+        break;
+      case 'pv':
+        fieldValue = newRowData['prq'] !== 'None' ? newRowData['prq'] : newRowData['popl_2']
+        break;
+      case 'popl_2':
+        fieldValue = newRowData['popl_3'] !== 'None' ? newRowData['popl_3'] : newRowData['pv']
+        break;
+      default:
+        break;
     }
+    const date1 = new Date(dateFor(fieldValue));
+    const date2 = new Date(newDate);
+    const diffTime = date2 - date1;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    console.log('nextValue', nextValue)
+    const nextDate = new Date(dateFor(nextValue));
+    const nextdiffTime = nextDate - date2;
+    const nextdiffDays = Math.ceil(nextdiffTime / (1000 * 60 * 60 * 24));
+
+    console.log('diffDays', diffDays)
+    console.log('nextdiffDays', nextdiffDays)
+
+    if ((field === 'popl_2' && diffDays < 0) || (field === 'pv' && diffDays > 0) || (field !== 'pv' && diffDays > 0 && nextdiffDays > 0)) {
+      handleTableData(data);
+      console.log('ddd')
+    } else {
+      notify()
+    }
+
 
   };
 
